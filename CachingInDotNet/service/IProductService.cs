@@ -10,4 +10,6 @@ public interface IProductService
     Task<Product?> UpdateProductAsync(Guid productId, Product product);
     Task DeleteProductAsync(Guid productId);
     
+    Task ClearAllCacheAsync();
+    
 }
