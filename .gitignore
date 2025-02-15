@@ -1,0 +1,67 @@
+# Build output directories
+bin/
+obj/
+out/
+artifacts/
+
+# Visual Studio specific folders
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.ide
+
+# macOS & Linux files
+.DS_Store
+*.swp
+*.swo
+
+# Rider / JetBrains IDE files
+.idea/
+*.iml
+
+# Log & debug files
+*.log
+*.tlog
+*.cache
+
+# NuGet dependencies
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+
+# ASP.NET & Entity Framework generated files
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Production.json
+secrets.json
+Migrations/
+
+# User-specific config
+*.launch.json
+*.code-workspace
+
+# Resharper files
+_ReSharper.Caches/
+*.DotSettings.user
+
+# Node.js (if using frontend)
+node_modules/
+npm-debug.log
+yarn.lock
+
+# Database files
+*.mdf
+*.ldb
+*.sqlite
+
+# Coverage & test results
+TestResults/
+*.trx
+*.coverage
+coverage/
+coverage.json
+lcov-report/
