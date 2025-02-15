@@ -6,14 +6,31 @@ using CachingInDotNet.service;
 using CachingInDotNet.service.impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
 builder.Services.AddScoped<IProductService, ProductService>();
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 builder.Services.AddEndpointsApiExplorer();
+
+var redisHost = builder.Configuration["Redis:Host"];
+var redisPort = builder.Configuration["Redis:Port"];
+var redisConnectionString = $"{redisHost}:{redisPort}";
+
+// Register Redis Connection
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    {
+        var configuration = builder.Configuration.GetSection("Redis:RedisConnectionString").Value;
+        return ConnectionMultiplexer.Connect(configuration);
+        
+    });
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "CachingInDotNet", Version = "v1" });

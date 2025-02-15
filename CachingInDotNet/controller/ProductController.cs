@@ -2,7 +2,6 @@ using CachingInDotNet.mapper;
 using CachingInDotNet.models.dto;
 using CachingInDotNet.service;
 using CachingInDotNet.system;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CachingInDotNet.controller;
@@ -58,11 +57,11 @@ public class ProductController: ControllerBase
     [Route("{id:guid}")]
     public async Task<ActionResult<Result>> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductDto updateProductDto)
     {
-        /*I have not implemented the model state validation yet
+        
          if (!ModelState.IsValid)
-        {
-            return new Result(false, system.StatusCode.BAD_REQUEST, "Invalid Data", ModelState);
-        }*/
+            {
+                return new Result(false, system.StatusCode.BAD_REQUEST, "Invalid Data", ModelState);
+            }
         
         //convert to product domain
         var product = ProductMapper.MapFromUpdateProductDtoToProduct(updateProductDto);
@@ -79,6 +78,15 @@ public class ProductController: ControllerBase
         await _productService.DeleteProductAsync(id);
         return Ok(new Result(true, system.StatusCode.SUCCESS, "Delete One Success"));
     }
+    
+    [HttpPost]
+    [Route("clear-cache")]
+    public async Task<ActionResult<Result>> ClearCache()
+    {
+        await _productService.ClearAllCacheAsync();
+        return Ok(new Result(true, system.StatusCode.SUCCESS, "Clear All Cache Success"));
+    }
+    
     
     
     

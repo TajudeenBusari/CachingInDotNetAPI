@@ -1,0 +1,10 @@
+﻿services:
+  cachingindotnet:
+    image: cachingindotnet
+    build:
+      context: .
+      dockerfile: CachingInDotNet/Dockerfile
+  redis:
+      image: redis
+      ports:
+          - "6379:6379"

@@ -8,6 +8,7 @@ using CachingInDotNet.models;
 using CachingInDotNet.repository;
 using CachingInDotNet.service.impl;
 using Moq;
+using StackExchange.Redis;
 using Xunit;
 
 namespace CachingInDotNet.Tests.service.impl;
@@ -17,6 +18,8 @@ public class ProductServiceTest
 {
     private readonly ProductService _productService;
     private readonly Mock<IProductRepository> _productRepositoryMock;
+    private readonly Mock<IConnectionMultiplexer>  _redisConnectionMock;
+    private readonly Mock<IDatabase> _redisDatabaseMock;
     private readonly List<Product> _products;
 
     
@@ -24,7 +27,13 @@ public class ProductServiceTest
     public ProductServiceTest()
     {
         _productRepositoryMock = new Mock<IProductRepository>();
-        _productService = new ProductService(_productRepositoryMock.Object);
+        _redisConnectionMock = new Mock<IConnectionMultiplexer>();
+        _redisDatabaseMock = new Mock<IDatabase>();
+        
+        // Mock Redis behavior
+        _redisConnectionMock.Setup(redis => redis.GetDatabase(It.IsAny<int>(), It.IsAny<object>()))
+            .Returns(_redisDatabaseMock.Object);
+        _productService = new ProductService(_productRepositoryMock.Object, _redisConnectionMock.Object);
         _products = new List<Product>();
 
         var product1 = new Product();
@@ -131,7 +140,7 @@ public class ProductServiceTest
         newProduct.productPrice = 300;
         newProduct.productQuantity = 30;
         newProduct.productCategory = "Category 3";
-        newProduct.productCreatedDate = DateTime.UtcNow;
+        newProduct.productCreatedDate = DateTime.UtcNow.AddDays(-1);
         newProduct.ExpiryDateTime = DateTime.UtcNow.AddDays(30);
         
         //Mock
@@ -148,7 +157,7 @@ public class ProductServiceTest
         Assert.Equal(300, result.productPrice);
         Assert.Equal(30, result.productQuantity);
         Assert.Equal("Category 3", result.productCategory);
-        Assert.Equal(DateTime.UtcNow.Date, result.productCreatedDate.Date);
+        Assert.Equal(DateTime.UtcNow.AddDays(-1).Date, result.productCreatedDate.Date);
         Assert.Equal(DateTime.UtcNow.AddDays(30).Date, result.ExpiryDateTime.Date);
         _productRepositoryMock.Verify(repo => repo.CreateAsync(newProduct), Times.Once);
     }
@@ -207,5 +216,29 @@ public class ProductServiceTest
         await _productService.DeleteProductAsync(productId);
         //Assert
         _productRepositoryMock.Verify(repo => repo.DeleteAsync(productId), Times.Once);
+    }
+
+    [Fact]
+    public async Task TestClearAllCacheSuccess()
+    {
+        //Arrange
+        //Mock
+        _productRepositoryMock
+            .Setup(repo =>
+                repo.GetAllAsync()).ReturnsAsync(_products);
+        //Act
+        await _productService.ClearAllCacheAsync();
+
+        //Assert
+        // Verify that the "products" cache key is deleted
+        _redisDatabaseMock.Verify(redis => redis.KeyDeleteAsync("products", CommandFlags.None), Times.Once);
+
+        // Verify that the individual product cache keys are deleted
+        foreach (var product in _products)
+        {
+            var cacheKey = $"product_{product.productId}";
+            _redisDatabaseMock.Verify(redis => redis.KeyDeleteAsync(cacheKey, CommandFlags.None), Times.Once);
+        }
+
     }
 }

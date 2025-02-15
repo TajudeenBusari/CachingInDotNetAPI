@@ -11,6 +11,7 @@ using CachingInDotNet.service.impl;
 using CachingInDotNet.system;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using StackExchange.Redis;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -27,6 +28,8 @@ public class ProductControllerTest
 {
     private readonly ProductController _productController;
     private readonly Mock<IProductRepository> _productRepository;
+    private readonly Mock<IConnectionMultiplexer> _redisMock;
+    private readonly Mock<IDatabase> _cacheMock;
     private readonly ProductService _productService;
     private readonly List<Product> _products;
     private ITestOutputHelper _output;
@@ -34,7 +37,14 @@ public class ProductControllerTest
     public ProductControllerTest(ITestOutputHelper output)
     {
         _productRepository = new Mock<IProductRepository>(); //initialize the mock
-        _productService = new ProductService(_productRepository.Object);
+        _redisMock = new Mock<IConnectionMultiplexer>();
+        _cacheMock = new Mock<IDatabase>();
+        
+        // Setup Redis mock to return our cache mock database
+        _redisMock.Setup(redis => redis.GetDatabase(It.IsAny<int>(), It.IsAny<object>()))
+            .Returns(_cacheMock.Object);
+        
+        _productService = new ProductService(_productRepository.Object, _redisMock.Object);
         _productController = new ProductController(_productService);
         _products = new List<Product>();
         _output = output;
@@ -143,8 +153,8 @@ public class ProductControllerTest
             300,
             30,
             "Category 3",
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(30)
+            DateTime.UtcNow.AddDays(10), //expiry date
+            DateTime.UtcNow.AddDays(-1) //created date
         );
         
         //Mock
@@ -254,6 +264,25 @@ public class ProductControllerTest
         Assert.True(actualResult.IsSuccess);
         Assert.Equal(200, actualResult.Code);
         Assert.Equal("Delete One Success", actualResult.Message);
+        Assert.Null(actualResult.Data);
+    }
+
+    [Fact]
+    public async Task TestClearAllCacheSuccess()
+    {
+        //Arrange
+        
+
+        //Act
+        var result = await _productController.ClearCache();
+
+        //Assert
+        Assert.NotNull(result);
+        var okResult = Assert.IsType<OkObjectResult>(result.Result).Value;
+        var actualResult = Assert.IsType<Result>(okResult);
+        Assert.True(actualResult.IsSuccess);
+        Assert.Equal(200, actualResult.Code);
+        Assert.Equal("Clear All Cache Success", actualResult.Message);
         Assert.Null(actualResult.Data);
     }
 }
