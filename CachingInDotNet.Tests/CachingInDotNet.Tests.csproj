@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <!--Enable XML documentation generation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>bin\Debug\net9.0\CachingInDotNet.Tests.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net8.0\CachingInDotNet.Tests.xml</DocumentationFile>
     <NoWarn>1591</NoWarn> <!-- Suppress warnings for missing XML comments -->
     <IsPackable>false</IsPackable>
   </PropertyGroup>
