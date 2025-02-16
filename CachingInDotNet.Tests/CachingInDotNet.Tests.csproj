@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType> <!-- Ensure this is set to Library -->
     <!--Enable XML documentation generation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\Debug\net8.0\CachingInDotNet.Tests.xml</DocumentationFile>
     <NoWarn>1591</NoWarn> <!-- Suppress warnings for missing XML comments -->
-    <IsPackable>false</IsPackable>
-    <GenerateProgramFile>false</GenerateProgramFile>
+    <IsPackable>false</IsPackable><!-- Prevents accidental packaging -->
+    
   </PropertyGroup>
 
   <ItemGroup>
