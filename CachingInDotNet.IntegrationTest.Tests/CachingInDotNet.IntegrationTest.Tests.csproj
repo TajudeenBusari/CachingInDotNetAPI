@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <!--<GenerateProgramFile>false</GenerateProgramFile>-->
         <!--Enable XML documentation generation-->
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\Debug\net8.0\CachingInDotNet.IntegrationTest.Tests.xml</DocumentationFile>

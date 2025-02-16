@@ -36,4 +36,6 @@ jobs:
         run: dotnet build --no-restore --configuration Release
       #Run tests
       - name: Run tests
-        run: dotnet test --no-build --verbosity normal
+        run: |
+          dotnet test CachingInDotNet.Tests/CachingInDotNet.Tests.csproj --no-build --verbosity normal
+          dotnet test CachingInDotNet.IntegrationTest.Tests/CachingInDotNet.IntegrationTest.Tests.csproj --no-build --verbosity normal
