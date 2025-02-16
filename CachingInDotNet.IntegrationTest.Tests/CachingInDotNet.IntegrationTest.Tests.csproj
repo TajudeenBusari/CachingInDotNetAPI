@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <OutputType>Library</OutputType> <!-- Ensure this is set to Library -->
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
