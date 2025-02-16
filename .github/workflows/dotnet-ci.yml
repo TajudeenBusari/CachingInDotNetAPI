@@ -26,6 +26,8 @@ jobs:
         run: dotnet restore
         
       #Clean the project
+      #This is to ensure that the project is built from scratch and not using any cached files
+      #This step has really helped to resolve the issue of the tests failing due to the project not being built from scratch
       - name: Clean
         run: dotnet clean CachingInDotNet/CachingInDotNet.csproj --configuration Release
         
