@@ -10,12 +10,6 @@ jobs:
       #Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v2
-      #Install .NET Core SDK manually
-      #- name: Install .Net SDK
-        #run: |
-          #curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 9.0 --install-dir $HOME/.dotnet --version latest
-          #export PATH="$HOME/.dotnet:$PATH"
-          #dotnet --info
           
       #Check set up .NET Core SDK
       - name: Setup .NET Core SDK
@@ -31,9 +25,14 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
         
-      #Build the project
+      # Build the main project only (API project, not tests)
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build CachingInDotNet/CachingInDotNet.csproj --no-restore --configuration Release
+      # Build the test project
+      - name: Build test project
+        run: |
+          dotnet build CachingInDotNet.Tests/CachingInDotNet.Tests.csproj --no-restore --configuration Release
+          dotnet build CachingInDotNet.IntegrationTest.Tests/CachingInDotNet.IntegrationTest.Tests.csproj --no-restore --configuration Release
       #Run tests
       - name: Run tests
         run: |
