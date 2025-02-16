@@ -25,6 +25,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
         
+      #Clean the project
+      - name: Clean
+        run: dotnet clean CachingInDotNet/CachingInDotNet.csproj --configuration Release
+        
       # Build the main project only (API project, not tests)
       - name: Build
         run: dotnet build CachingInDotNet/CachingInDotNet.csproj --no-restore --configuration Release
@@ -37,5 +41,5 @@ jobs:
       #Run tests
       - name: Run tests
         run: |
-          dotnet test CachingInDotNet.Tests/CachingInDotNet.Tests.csproj --no-build --verbosity normal
-          dotnet test CachingInDotNet.IntegrationTest.Tests/CachingInDotNet.IntegrationTest.Tests.csproj --no-build --verbosity normal
+          dotnet test CachingInDotNet.Tests/CachingInDotNet.Tests.csproj --no-build --configuration Release --logger "trx" --verbosity normal --results-directory /tmp/testresults
+          dotnet test CachingInDotNet.IntegrationTest.Tests/CachingInDotNet.IntegrationTest.Tests.csproj --no-build --configuration Release --logger "trx" --verbosity normal --results-directory /tmp/testresults
