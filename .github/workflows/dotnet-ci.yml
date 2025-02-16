@@ -9,13 +9,7 @@ jobs:
     steps:
       #Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
-      #Install .NET Core SDK manually
-      #- name: Install .Net SDK
-        #run: |
-          #curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 9.0 --install-dir $HOME/.dotnet --version latest
-          #export PATH="$HOME/.dotnet:$PATH"
-          #dotnet --info
+        uses: actions/checkout@v3
           
       #Check set up .NET Core SDK
       - name: Setup .NET Core SDK
@@ -31,11 +25,15 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
         
+      #clean previous build
+      - name: Clean
+        run: dotnet clean --configuration Release
+        
       #Build the project
       - name: Build
         run: dotnet build --no-restore --configuration Release
       #Run tests
       - name: Run tests
         run: |
-          dotnet test CachingInDotNet.Tests/CachingInDotNet.Tests.csproj --no-build --verbosity normal
-          dotnet test CachingInDotNet.IntegrationTest.Tests/CachingInDotNet.IntegrationTest.Tests.csproj --no-build --verbosity normal
+          dotnet test CachingInDotNet.Tests/CachingInDotNet.Tests.csproj --no-build configuration Release --logger "trx" --verbosity normal --test-adapter-path:.
+          dotnet test CachingInDotNet.IntegrationTest.Tests/CachingInDotNet.IntegrationTest.Tests.csproj --no-build --configuration Release --logger "trx" --verbosity normal --test-adapter-path:.
