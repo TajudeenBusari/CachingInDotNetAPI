@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <!--Enable XML documentation generation-->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\Debug\net9.0\CachingInDotNet.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn> <!-- Suppress warnings for missing XML comments -->
   </PropertyGroup>
 
   <ItemGroup>

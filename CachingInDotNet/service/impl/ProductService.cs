@@ -1,3 +1,7 @@
+//<copyright file="ProductService" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 using System.Collections;
 using System.Text.Json;
 using CachingInDotNet.exception;
@@ -7,6 +11,9 @@ using StackExchange.Redis;
 
 namespace CachingInDotNet.service.impl;
 
+/// <summary>
+/// Product service implementation
+/// </summary>
 public class ProductService: IProductService
 {
     private readonly IProductRepository _productRepository;
@@ -19,7 +26,12 @@ public class ProductService: IProductService
         _cacheDb = redis.GetDatabase();
     }
     
-    
+    /// <summary>
+    /// Get product by Id
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    /// <exception cref="ProductNotFoundException"></exception>
     public async Task<Product?> GetProductByIdAsync(Guid productId)
     {
         var cacheKey = $"product_{productId}";
@@ -40,6 +52,10 @@ public class ProductService: IProductService
         return foundProduct;
     }
 
+    /// <summary>
+    /// Get all products
+    /// </summary>
+    /// <returns></returns>
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
         //check if the products are in the cache
@@ -56,6 +72,11 @@ public class ProductService: IProductService
         return productsFromDb;
     }
 
+    /// <summary>
+    /// Add a new product
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns></returns>
     public async Task<Product> AddProductAsync(Product product)
     {
         //cache new product
@@ -68,6 +89,13 @@ public class ProductService: IProductService
         return await _productRepository.CreateAsync(product);
     }
 
+    /// <summary>
+    /// Update a product
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="product"></param>
+    /// <returns></returns>
+    /// <exception cref="ProductNotFoundException"></exception>
     public async Task<Product?> UpdateProductAsync(Guid productId, Product product)
     {
 
@@ -104,6 +132,9 @@ public class ProductService: IProductService
         await _cacheDb.KeyDeleteAsync(cacheKey);
     }
 
+    /// <summary>
+    /// clear all cache
+    /// </summary>
     public async Task ClearAllCacheAsync()
     {
         var cacheKeys = new List<string>
@@ -123,6 +154,5 @@ public class ProductService: IProductService
             await _cacheDb.KeyDeleteAsync(productCacheKey);
         }
         
-       
     }
 }

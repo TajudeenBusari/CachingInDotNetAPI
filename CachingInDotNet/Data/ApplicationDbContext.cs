@@ -1,3 +1,7 @@
+//<copyright file="ApplicationDbContext" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 using CachingInDotNet.models;
 using Microsoft.EntityFrameworkCore;
 
