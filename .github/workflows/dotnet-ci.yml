@@ -10,13 +10,23 @@ jobs:
       #Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v2
+      #Install .NET Core SDK manually
+      - name: Install .Net SDK
+        run: |
+          curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 9.0 --install-dir $HOME/.dotnet --version latest
+          export PATH="$HOME/.dotnet:$PATH"
+          dotnet --info
+          
       #Check set up .NET Core SDK
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 9.0.2
+      #- name: Setup .NET Core SDK
+        #uses: actions/setup-dotnet@v3
+        #with:
+          #dotnet-version: 8.0
+          
+      #Restore dependencies
       - name: Restore dependencies
         run: dotnet restore
+        
       #Build the project
       - name: Build
         run: dotnet build --no-restore --configuration Release
