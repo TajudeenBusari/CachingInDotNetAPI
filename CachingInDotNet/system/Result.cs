@@ -1,3 +1,7 @@
+//<copyright file="Result" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 namespace CachingInDotNet.system;
 
 public class Result

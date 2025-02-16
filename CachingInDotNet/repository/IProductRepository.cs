@@ -1,7 +1,13 @@
+//<copyright file="IProductRepository" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 using CachingInDotNet.models;
 
 namespace CachingInDotNet.repository;
-
+/// <summary>
+/// Product Repository interface which contains all the methods
+/// </summary>
 public interface IProductRepository
 {
     Task <IEnumerable<Product>>GetAllAsync();

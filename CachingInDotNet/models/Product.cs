@@ -1,3 +1,7 @@
+//<copyright file="product" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

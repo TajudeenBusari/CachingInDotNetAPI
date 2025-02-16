@@ -1,4 +1,7 @@
-
+//<copyright file="ProductControllerTest" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -72,6 +75,9 @@ public class ProductControllerTest
         _products.Add(product2);
     }
 
+    /// <summary>
+    /// Test the GetAllProducts method in the ProductController
+    /// </summary>
     [Fact]
     public async Task TestGetAllProductsSuccess()
     {
@@ -110,6 +116,9 @@ public class ProductControllerTest
         //NOTE: productCreatedDate does not exist in the ProductDto
     }
     
+    /// <summary>
+    /// Get product by id
+    /// </summary>
     [Fact]
     public async Task TestGetProductByIdSuccess()
     {
@@ -143,6 +152,9 @@ public class ProductControllerTest
         //NOTE: productCreatedDate does not exist in the ProductDto
     }
     
+    /// <summary>
+    /// Add a product
+    /// </summary>
     [Fact]
     public async Task TestAddProductSuccess()
     {
@@ -184,6 +196,9 @@ public class ProductControllerTest
         //NOTE: productCreatedDate does not exist in the ProductDto
     }
     
+    /// <summary>
+    /// update a product
+    /// </summary>
     [Fact]
     public async Task TestUpdateProductSuccess()
     {
@@ -240,7 +255,9 @@ public class ProductControllerTest
         Assert.Equal(updateProductDto.productCategory, actualResultData.productCategory);
         Assert.Equal(_products[0].ExpiryDateTime.Date, actualResultData.ExpiryDateTime.Date);
     }
-    
+    /// <summary>
+    /// Delete a product
+    /// </summary>
     [Fact]
     public async Task TestDeleteProductSuccess()
     {
@@ -267,6 +284,9 @@ public class ProductControllerTest
         Assert.Null(actualResult.Data);
     }
 
+    /// <summary>
+    /// Clear all cache
+    /// </summary>
     [Fact]
     public async Task TestClearAllCacheSuccess()
     {

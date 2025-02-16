@@ -1,4 +1,7 @@
-
+//<copyright file="ProductServiceTest" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +63,9 @@ public class ProductServiceTest
         _products.Add(product2);
     }
     
+    /// <summary>
+    /// Get all products success test
+    /// </summary>
     [Fact]
     public async Task TestGetAllProductsSuccess()
     {
@@ -91,6 +97,9 @@ public class ProductServiceTest
         
     }
     
+    /// <summary>
+    /// Get product by id success test
+    /// </summary>
     [Fact]
     public async Task TestGetProductByIdSuccess()
     {
@@ -115,6 +124,9 @@ public class ProductServiceTest
         _productRepositoryMock.Verify(repo => repo.GetByIdAsync(productId), Times.Once);
     }
 
+    /// <summary>
+    /// Get product by id not found
+    /// </summary>
     [Fact]
     public async Task TestGetProductByIdNotFound()
     {
@@ -129,6 +141,9 @@ public class ProductServiceTest
         _productRepositoryMock.Verify(repo => repo.GetByIdAsync(nonExistingProductId), Times.Once);
     }
 
+    /// <summary>
+    /// Add product success test
+    /// </summary>
     [Fact]
     public async Task TestAddProductSuccess()
     {
@@ -162,6 +177,9 @@ public class ProductServiceTest
         _productRepositoryMock.Verify(repo => repo.CreateAsync(newProduct), Times.Once);
     }
 
+    /// <summary>
+    /// Update product success test
+    /// </summary>
     [Fact]
     public async Task TestUpdateProductSuccess()
     {
@@ -203,6 +221,9 @@ public class ProductServiceTest
         _productRepositoryMock.Verify(repo => repo.GetByIdAsync(productId), Times.Once);
     }
 
+    /// <summary>
+    /// Delete product success test
+    /// </summary>
     [Fact]
     public async Task TestDeleteProductSuccess()
     {
@@ -218,6 +239,9 @@ public class ProductServiceTest
         _productRepositoryMock.Verify(repo => repo.DeleteAsync(productId), Times.Once);
     }
 
+    /// <summary>
+    /// Clear all cache success test
+    /// </summary>
     [Fact]
     public async Task TestClearAllCacheSuccess()
     {

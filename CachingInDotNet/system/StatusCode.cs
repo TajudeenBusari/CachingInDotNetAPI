@@ -1,5 +1,8 @@
+//<copyright file="StatusCode" Owner=tjtechy> 
+//Author: Tajudeen Busari
+//Date: 2025-14-01
+//</copyright>
 namespace CachingInDotNet.system;
-
 public class StatusCode
 {
     public static readonly int SUCCESS = 200;
