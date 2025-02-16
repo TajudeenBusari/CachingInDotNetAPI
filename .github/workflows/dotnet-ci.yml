@@ -9,7 +9,7 @@ jobs:
     steps:
       #Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
           
       #Check set up .NET Core SDK
       - name: Setup .NET Core SDK
@@ -28,6 +28,7 @@ jobs:
       # Build the main project only (API project, not tests)
       - name: Build
         run: dotnet build CachingInDotNet/CachingInDotNet.csproj --no-restore --configuration Release
+        
       # Build the test project
       - name: Build test project
         run: |
